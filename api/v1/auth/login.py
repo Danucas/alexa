@@ -8,9 +8,9 @@ import threading
 from threading import Thread
 
 
-def login_tread(device_id, action, phone, code):
+def login_tread(device_id, action, phone):
     rappi_interface = Rappi(device_id)
-    st = rappi_interface.login(action, phone, code)
+    st = rappi_interface.login(action, phone)
 
 
 @auth_app.route('/login', methods=['POST'])
@@ -38,7 +38,7 @@ def login():
             os.remove(status_path)
         except:
             pass
-        Thread(target=login_tread, args=(device_id, action, phone, code)).start()
+        Thread(target=login_tread, args=(device_id, action, phone)).start()
         while not check_login_status(device_id):
             time.sleep(1)
         time.sleep(1)
