@@ -44,14 +44,11 @@ class Rappi:
         self.driver.set_window_position(0, 0)
         self.driver.set_window_size(720, 768)
 
-
-
-    def login(self, action, phone, code):
+    def login(self, action, phone):
         self.reload_driver()
         if action == 'init':
             search_url = "https://www.rappi.com.co/login"
             self.driver.get(search_url)
-            time.sleep(3)
             try:
                 cel_input = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div[2]/form/div[1]/div/input')
             except Exception as e:
@@ -61,10 +58,9 @@ class Rappi:
 
             sms_btn = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div[2]/form/div[2]/button[2]')
             sms_btn.click()
-            time.sleep(2)
             self.save_status('sms')
             while self.get_status()['code'] is None:
-                time.sleep(6)
+                time.sleep(1)
                 try:
                     timeout = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div/div/div[2]/span/span')
                     timeo = timeout.text.split(': ')[1]
@@ -86,7 +82,6 @@ class Rappi:
             code_input4.send_keys(code4[3])
             verify_btn = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div/div/div[1]/div/button')
             verify_btn.click()
-            time.sleep(4)
             try:
                 email_val = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div/div/div[1]/span[2]')
                 if '@gmail.com' in email_val.text:
@@ -98,7 +93,7 @@ class Rappi:
                 self.save_status('finish')
                 return
             while self.get_status()['code'] is None:
-                time.sleep(6)
+                time.sleep(1)
             stat = self.get_status()
             code = stat.get('code')
             code6 = code
@@ -116,7 +111,6 @@ class Rappi:
             code_input6.send_keys(code6[5])
             val_btn = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div/div/div[1]/div/button')
             val_btn.click()
-            time.sleep(3)
             self.save_status('finish')
             return 'finish'
 
@@ -148,7 +142,6 @@ class Rappi:
         except:
             pass
         cat.click()
-        time.sleep(2)
         restaurants_container = self.get_by_xpath('//*[@id="__next"]/div[2]/div/div[4]/section/ul')
         restaurants = []
         for child in restaurants_container.find_elements_by_xpath('.//h3'):
@@ -168,7 +161,7 @@ class Rappi:
         return menu_categories
 
     def get_by_xpath(self, xpath, driver=None):
-        el = WebDriverWait(driver if driver else self.driver, 6).until(
+        el = WebDriverWait(driver if driver else self.driver, 2).until(
             EC.element_to_be_clickable(
                 (
                     By.XPATH,

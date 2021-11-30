@@ -40,15 +40,15 @@ def login():
             pass
         Thread(target=login_tread, args=(device_id, action, phone, code)).start()
         while not check_login_status(device_id):
-            time.sleep(4)
-        time.sleep(2)
+            time.sleep(1)
+        time.sleep(1)
         return jsonify(next_action='sms')
 
     elif action == 'sms' or action == 'email':
         save_status(device_id, action, code)
         while get_status(device_id)['action'] == action:
-            time.sleep(3)
-        time.sleep(2)
+            time.sleep(1)
+        time.sleep(1)
         return jsonify(next_action=get_status(device_id)['action'])
 
 
