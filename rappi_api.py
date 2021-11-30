@@ -18,7 +18,9 @@ class Rappi:
 
     def get_account_status(self):
         if self.login_status():
+            self.driver.close()
             return 'SIGNED'
+        self.driver.close()
         return 'UNSIGNED'
 
     def login_status(self):
