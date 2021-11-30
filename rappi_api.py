@@ -188,7 +188,7 @@ class Rappi:
     def save_status(self, st, sign=None):
         try:
             stats = self.get_status()
-        except:
+        except FileNotFoundError:
             stats = {
                 "action": st,
                 "code": None,
