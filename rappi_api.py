@@ -197,6 +197,7 @@ class Rappi:
         if sign:
             stats['sign'] = sign
         stats['action'] = st
+        stats['code'] = None
         status_path = f'{os.getcwd()}/sessions/{self.device_id}.status'
         with open(status_path, 'w') as status_file:
             status_file.write(json.dumps(stats))
