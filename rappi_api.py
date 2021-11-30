@@ -59,60 +59,71 @@ class Rappi:
             sms_btn = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div[2]/form/div[2]/button[2]')
             sms_btn.click()
             self.save_status('sms')
-            while self.get_status()['code'] is None:
-                time.sleep(1)
+
+            verified_code = False
+            while not verified_code:
+                # Fetch the status file to check if the code is setted
+                while self.get_status()['code'] is None:
+                    time.sleep(1)
+                    try:
+                        timeout = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div/div/div[2]/span/span')
+                        timeo = timeout.text.split(': ')[1]
+                        if timeo == '00:00':
+                            self.save_status('timeout')
+                            return
+                    except:
+                        pass
+                stat = self.get_status()
+                code = stat.get('code')
+                self.code4(code)
+                # Check if the code works and there's no problem with the login
                 try:
-                    timeout = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div/div/div[2]/span/span')
-                    timeo = timeout.text.split(': ')[1]
-                    if timeo == '00:00':
-                        self.save_status('finish')
-                        return
-                except:
-                    pass
-            stat = self.get_status()
-            code = stat.get('code')
-            code4 = code
-            code_input1 = self.get_by_xpath('//*[@id="validation-input-0"]')
-            code_input1.send_keys(code4[0])
-            code_input2 = self.get_by_xpath('//*[@id="validation-input-1"]')
-            code_input2.send_keys(code4[1])
-            code_input3 = self.get_by_xpath('//*[@id="validation-input-2"]')
-            code_input3.send_keys(code4[2])
-            code_input4 = self.get_by_xpath('//*[@id="validation-input-3"]')
-            code_input4.send_keys(code4[3])
-            verify_btn = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div/div/div[1]/div/button')
-            verify_btn.click()
-            try:
-                email_val = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div/div/div[1]/span[2]')
-                if '@gmail.com' in email_val.text:
-                    self.save_status('email')
-                else:
-                    self.save_status('')
+                    email_val = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div/div/div[1]/span[2]')
+                    if '@' in email_val.text:
+                        self.save_status('email')
+                        verified_code = True
+                    elif phone in email_val.text:
+                        self.save_status('resend_sms')
+                        continue
+                except Exception as e:
+                    self.save_status('finish')
                     return
-            except Exception as e:
-                self.save_status('finish')
-                return
             while self.get_status()['code'] is None:
                 time.sleep(1)
             stat = self.get_status()
             code = stat.get('code')
-            code6 = code
-            code_input1 = self.get_by_xpath('//*[@id="validation-input-0"]')
-            code_input1.send_keys(code6[0])
-            code_input2 = self.get_by_xpath('//*[@id="validation-input-1"]')
-            code_input2.send_keys(code6[1])
-            code_input3 = self.get_by_xpath('//*[@id="validation-input-2"]')
-            code_input3.send_keys(code6[2])
-            code_input4 = self.get_by_xpath('//*[@id="validation-input-3"]')
-            code_input4.send_keys(code6[3])
-            code_input5 = self.get_by_xpath('//*[@id="validation-input-4"]')
-            code_input5.send_keys(code6[4])
-            code_input6 = self.get_by_xpath('//*[@id="validation-input-5"]')
-            code_input6.send_keys(code6[5])
-            val_btn = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div/div/div[1]/div/button')
-            val_btn.click()
+            self.code6(code)
             self.save_status('finish')
             return 'finish'
+
+    def code4(self, code):
+        code_input1 = self.get_by_xpath('//*[@id="validation-input-0"]')
+        code_input1.send_keys(code[0])
+        code_input2 = self.get_by_xpath('//*[@id="validation-input-1"]')
+        code_input2.send_keys(code[1])
+        code_input3 = self.get_by_xpath('//*[@id="validation-input-2"]')
+        code_input3.send_keys(code[2])
+        code_input4 = self.get_by_xpath('//*[@id="validation-input-3"]')
+        code_input4.send_keys(code[3])
+        verify_btn = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div/div/div[1]/div/button')
+        verify_btn.click()
+
+    def code6(self, code):
+        code_input1 = self.get_by_xpath('//*[@id="validation-input-0"]')
+        code_input1.send_keys(code[0])
+        code_input2 = self.get_by_xpath('//*[@id="validation-input-1"]')
+        code_input2.send_keys(code[1])
+        code_input3 = self.get_by_xpath('//*[@id="validation-input-2"]')
+        code_input3.send_keys(code[2])
+        code_input4 = self.get_by_xpath('//*[@id="validation-input-3"]')
+        code_input4.send_keys(code[3])
+        code_input5 = self.get_by_xpath('//*[@id="validation-input-4"]')
+        code_input5.send_keys(code[4])
+        code_input6 = self.get_by_xpath('//*[@id="validation-input-5"]')
+        code_input6.send_keys(code[5])
+        val_btn = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div/div/div[1]/div/button')
+        val_btn.click()
+
 
     def list_food_categories(self):
         self.reload_driver()
