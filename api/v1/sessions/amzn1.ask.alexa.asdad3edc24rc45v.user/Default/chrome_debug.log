@@ -1,0 +1,7 @@
+[1130/165532.696517:ERROR:file_io.cc(94)] ReadExactly: expected 8, observed 0
+[1130/165532.700627:ERROR:xattr.cc(63)] setxattr org.chromium.crashpad.database.initialized on file /var/folders/d0/bcv01bp908v_g315496_fbmh0000gp/T/: Operation not permitted (1)
+[1130/165537.458458:INFO:CONSOLE(1)] "react-i18next:: It seems you are still using the old wait option, you may migrate to the new useSuspense behaviour.", source: https://www.rappi.com.co/_next/static/chunks/pages/_app-fdf65b3dec39427a92d3.js (1)
+[1130/165537.702247:INFO:CONSOLE(1)] "The following event viewStoreType was found =)", source: https://www.rappi.com.co/_next/static/chunks/967-f0269eeb34c2d04f658f.js (1)
+[1130/165539.364477:INFO:CONSOLE(2)] "Hotjar not launching due to suspicious userAgent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/96.0.4664.55 Safari/537.36", source: https://cdn.logrocket.com/LogRocket.min.js (2)
+[1130/165543.039488:INFO:CONSOLE(2)] "LogRocket filter manager is using too much memory. Disabling.", source: https://cdn.logrocket.com/LogRocket.min.js (2)
+[1130/165543.349105:INFO:CONSOLE(2)] "LogRocket: insertRule/deleteRule rate limit exceeded. Stopping style collection.", source: https://cdn.logrocket.com/LogRocket.min.js (2)

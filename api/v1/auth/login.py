@@ -6,6 +6,7 @@ import os
 import time
 import threading
 from threading import Thread
+from utils import get_status, save_status
 
 
 def login_tread(device_id, action, phone):
@@ -43,25 +44,6 @@ def login():
             time.sleep(1)
         time.sleep(1)
         return jsonify(next_action=get_status(device_id)['action'])
-
-
-def save_status(device_id, st, code):
-    stats = get_status(device_id)
-    stats['code'] = code
-    stats['st'] = st
-
-    status_path = f'{os.getcwd()}/sessions/{device_id}.status'
-    with open(status_path, 'w') as status_file:
-        status_file.write(json.dumps(stats))
-
-
-def get_status(device_id):
-    try:
-        status_path = f'{os.getcwd()}/sessions/{device_id}.status'
-        with open(status_path, 'r') as status_file:
-            return json.loads(status_file.read())
-    except:
-        return {'action': ''}
 
 
 def check_login_status(device_id):
