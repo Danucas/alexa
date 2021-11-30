@@ -39,9 +39,9 @@ def login():
         except:
             pass
         Thread(target=login_tread, args=(device_id, action, phone)).start()
-        while not check_login_status(device_id):
-            time.sleep(1)
-        time.sleep(1)
+        # while not check_login_status(device_id):
+        #     time.sleep(1)
+        # time.sleep(1)
         return jsonify(next_action='sms')
 
     elif action == 'sms' or action == 'email':
