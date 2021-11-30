@@ -36,7 +36,7 @@ class Rappi:
         op = webdriver.chrome.options.Options()
         session_path = f'{os.getcwd()}/sessions/{self.device_id}.session'
         user_path = f'{os.getcwd()}/sessions/{self.device_id}.user'
-        # op.headless = True
+        op.headless = True
         op.add_argument(f'user-data-dir={user_path}')
         self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=op)
         self.driver.set_window_position(0, 0)
