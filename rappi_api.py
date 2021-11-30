@@ -18,18 +18,17 @@ class Rappi:
 
     def get_account_status(self):
         if self.login_status():
-            self.driver.close()
             return 'SIGNED'
-        self.driver.close()
         return 'UNSIGNED'
 
     def login_status(self):
         self.reload_driver()
         search_url = "https://www.rappi.com.co/login"
         self.driver.get(search_url)
-        time.sleep(2)
+        time.sleep(1)
         try:
             cel_input = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div[2]/form/div[1]/div/input')
+            return False
         except Exception as e:
             print(e)
             return True
@@ -78,7 +77,7 @@ class Rappi:
                 self.code4(code)
                 # Check if the code works and there's no problem with the login
                 try:
-                    time.sleep(2)
+                    time.sleep(1)
                     email_val = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div/div/div[1]/span[2]')
                     if '@' in email_val.text:
                         self.save_status('email')
