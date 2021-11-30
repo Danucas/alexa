@@ -1,0 +1,193 @@
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+import pickle
+import os
+import requests
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.common.exceptions import ElementClickInterceptedException
+import json
+from selenium import webdriver
+
+
+class Rappi:
+    def __init__(self, user_device_id):
+        self.driver = None
+        self.device_id = user_device_id
+
+    def get_account_status(self):
+        if self.login_status():
+            return 'SIGNED'
+        return 'UNSIGNED'
+
+    def login_status(self):
+        self.reload_driver()
+        search_url = "https://www.rappi.com.co/login"
+        self.driver.get(search_url)
+        time.sleep(2)
+        try:
+            cel_input = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div[2]/form/div[1]/div/input')
+        except Exception as e:
+            print(e)
+            return True
+
+    def reload_driver(self):
+        op = webdriver.chrome.options.Options()
+        session_path = f'{os.getcwd()}/sessions/{self.device_id}.session'
+        user_path = f'{os.getcwd()}/sessions/{self.device_id}.user'
+        # op.headless = True
+        op.add_argument(f'user-data-dir={user_path}')
+        self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=op)
+        self.driver.set_window_position(0, 0)
+        self.driver.set_window_size(720, 768)
+
+
+
+    def login(self, action, phone, code):
+        self.reload_driver()
+        if action == 'init':
+            search_url = "https://www.rappi.com.co/login"
+            self.driver.get(search_url)
+            time.sleep(3)
+            try:
+                cel_input = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div[2]/form/div[1]/div/input')
+            except Exception as e:
+                return 'already signed'
+
+            cel_input.send_keys(phone)
+
+            sms_btn = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div[2]/form/div[2]/button[2]')
+            sms_btn.click()
+            time.sleep(2)
+            self.save_status('sms')
+            while self.get_status()['code'] is None:
+                time.sleep(6)
+                try:
+                    timeout = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div/div/div[2]/span/span')
+                    timeo = timeout.text.split(': ')[1]
+                    if timeo == '00:00':
+                        self.save_status('finish')
+                        return
+                except:
+                    pass
+            stat = self.get_status()
+            code = stat.get('code')
+            code4 = code
+            code_input1 = self.get_by_xpath('//*[@id="validation-input-0"]')
+            code_input1.send_keys(code4[0])
+            code_input2 = self.get_by_xpath('//*[@id="validation-input-1"]')
+            code_input2.send_keys(code4[1])
+            code_input3 = self.get_by_xpath('//*[@id="validation-input-2"]')
+            code_input3.send_keys(code4[2])
+            code_input4 = self.get_by_xpath('//*[@id="validation-input-3"]')
+            code_input4.send_keys(code4[3])
+            verify_btn = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div/div/div[1]/div/button')
+            verify_btn.click()
+            time.sleep(4)
+            try:
+                email_val = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div/div/div[1]/span[2]')
+                if '@gmail.com' in email_val.text:
+                    self.save_status('email')
+                else:
+                    self.save_status('')
+                    return
+            except Exception as e:
+                self.save_status('finish')
+                return
+            while self.get_status()['code'] is None:
+                time.sleep(6)
+            stat = self.get_status()
+            code = stat.get('code')
+            code6 = code
+            code_input1 = self.get_by_xpath('//*[@id="validation-input-0"]')
+            code_input1.send_keys(code6[0])
+            code_input2 = self.get_by_xpath('//*[@id="validation-input-1"]')
+            code_input2.send_keys(code6[1])
+            code_input3 = self.get_by_xpath('//*[@id="validation-input-2"]')
+            code_input3.send_keys(code6[2])
+            code_input4 = self.get_by_xpath('//*[@id="validation-input-3"]')
+            code_input4.send_keys(code6[3])
+            code_input5 = self.get_by_xpath('//*[@id="validation-input-4"]')
+            code_input5.send_keys(code6[4])
+            code_input6 = self.get_by_xpath('//*[@id="validation-input-5"]')
+            code_input6.send_keys(code6[5])
+            val_btn = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div/div/div[1]/div/button')
+            val_btn.click()
+            time.sleep(3)
+            self.save_status('finish')
+            return 'finish'
+
+    def list_food_categories(self):
+        self.reload_driver()
+        self.driver.get('https://www.rappi.com.co/restaurantes')
+        time.sleep(3)
+        slider = self.get_by_xpath('//*[@id="__next"]/div[2]/div/div[2]/div/div/div/div/div/div')
+        try:
+            close_directions = self.get_by_xpath('//*[@id="portal-root-container"]/div/div/div/div[1]/div')
+            close_directions.click()
+        except:
+            pass
+        food_categories = []
+        for child in slider.find_elements_by_xpath('.//span'):
+            if child.text and child.text != '':
+                food_categories.append((child.find_element_by_xpath('..//..//..//..'), child.text))
+        return food_categories
+
+    def list_restaurants(self, category=None):
+        food_categories = self.list_food_categories()
+        cat = None
+        for f_cat in food_categories:
+            if f_cat[1] == category:
+                cat = f_cat[0]
+        try:
+            close_directions = self.get_by_xpath('//*[@id="portal-root-container"]/div/div/div/div[1]/div')
+            close_directions.click()
+        except:
+            pass
+        cat.click()
+        time.sleep(2)
+        restaurants_container = self.get_by_xpath('//*[@id="__next"]/div[2]/div/div[4]/section/ul')
+        restaurants = []
+        for child in restaurants_container.find_elements_by_xpath('.//h3'):
+            restaurants.append({
+                'name': child.text,
+                'url': child.find_element_by_xpath('..//..//..').get_attribute('href')
+            })
+        return restaurants
+
+    def list_menu_categories(self, restaurant):
+        self.reload_driver()
+        self.driver.get(restaurant)
+        categories_container = self.get_by_xpath('//*[@id="restaurantLayoutContainer"]/div[2]/div[2]')
+        menu_categories = []
+        for child in categories_container.find_elements_by_xpath('.//span'):
+            menu_categories.append(child.text)
+        return menu_categories
+
+    def get_by_xpath(self, xpath, driver=None):
+        el = WebDriverWait(driver if driver else self.driver, 6).until(
+            EC.element_to_be_clickable(
+                (
+                    By.XPATH,
+                    xpath
+                )
+            )
+        )
+        return el
+    
+    def save_status(self, st):
+        status_path = f'{os.getcwd()}/sessions/{self.device_id}.status'
+        with open(status_path, 'w') as status_file:
+            status_file.write(json.dumps({
+                "action": st,
+                "code": None
+            }))
+
+    def get_status(self):
+        status_path = f'{os.getcwd()}/sessions/{self.device_id}.status'
+        with open(status_path, 'r') as status_file:
+            return json.loads(status_file.read())
+
+
+
