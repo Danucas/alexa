@@ -161,7 +161,7 @@ class Rappi:
         return menu_categories
 
     def get_by_xpath(self, xpath, driver=None):
-        el = WebDriverWait(driver if driver else self.driver, 2).until(
+        el = WebDriverWait(driver if driver else self.driver, 4).until(
             EC.element_to_be_clickable(
                 (
                     By.XPATH,
