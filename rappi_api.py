@@ -79,7 +79,7 @@ class Rappi:
                 self.code4(code)
                 # Check if the code works and there's no problem with the login
                 try:
-                    time.sleep(1)
+                    time.sleep(2)
                     email_val = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div/div/div[1]/span[2]')
                     if '@' in email_val.text:
                         self.save_status('email')
@@ -89,7 +89,6 @@ class Rappi:
                         continue
                 except Exception as e:
                     self.save_status('finish', "SIGNED")
-                    self.save_status('finish')
                     return
             while self.get_status()['code'] is None:
                 time.sleep(1)
