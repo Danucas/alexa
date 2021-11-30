@@ -15,6 +15,7 @@ class Rappi:
     def __init__(self, user_device_id):
         self.driver = None
         self.device_id = user_device_id
+        self.save_status('')
 
     def get_account_status(self):
         return self.get_status()['sign']
