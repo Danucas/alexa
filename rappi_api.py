@@ -17,9 +17,7 @@ class Rappi:
         self.device_id = user_device_id
 
     def get_account_status(self):
-        if self.login_status():
-            return 'SIGNED'
-        return 'UNSIGNED'
+        return self.get_status()['sign']
 
     def login_status(self):
         self.reload_driver()
@@ -27,6 +25,7 @@ class Rappi:
         self.driver.get(search_url)
         time.sleep(1)
         try:
+
             cel_input = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div[2]/form/div[1]/div/input')
             return False
         except Exception as e:
@@ -35,7 +34,7 @@ class Rappi:
 
     def reload_driver(self):
         op = webdriver.chrome.options.Options()
-        session_path = f'{os.getcwd()}/sessions/{self.device_id}.session'
+        # session_path = f'{os.getcwd()}/sessions/{self.device_id}.session'
         user_path = f'{os.getcwd()}/sessions/{self.device_id}.user'
         op.headless = True
         op.add_argument(f'user-data-dir={user_path}')
@@ -52,6 +51,8 @@ class Rappi:
                 cel_input = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div[2]/form/div[1]/div/input')
             except Exception as e:
                 return 'already signed'
+
+            self.save_status('init', "UNSIGNED")
 
             cel_input.send_keys(phone)
 
@@ -86,6 +87,7 @@ class Rappi:
                         self.save_status('resend_sms')
                         continue
                 except Exception as e:
+                    self.save_status('finish', "SIGNED")
                     self.save_status('finish')
                     return
             while self.get_status()['code'] is None:
@@ -93,7 +95,7 @@ class Rappi:
             stat = self.get_status()
             code = stat.get('code')
             self.code6(code)
-            self.save_status('finish')
+            self.save_status('finish', "SIGNED")
             return 'finish'
 
     def code4(self, code):
@@ -182,18 +184,23 @@ class Rappi:
         )
         return el
     
-    def save_status(self, st):
+    def save_status(self, st, sign=None):
+        try:
+            stats = self.get_status()
+        except:
+            stats = {
+                "action": st,
+                "code": None,
+                "sign": "UNSIGNED"
+            }
+        if sign:
+            stats['sign'] = sign
+        stats['action'] = st
         status_path = f'{os.getcwd()}/sessions/{self.device_id}.status'
         with open(status_path, 'w') as status_file:
-            status_file.write(json.dumps({
-                "action": st,
-                "code": None
-            }))
+            status_file.write(json.dumps(stats))
 
     def get_status(self):
         status_path = f'{os.getcwd()}/sessions/{self.device_id}.status'
         with open(status_path, 'r') as status_file:
             return json.loads(status_file.read())
-
-
-
