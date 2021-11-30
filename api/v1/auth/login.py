@@ -33,11 +33,6 @@ def login():
         return jsonify(error='Missing field <code>'), 403
 
     if action == 'init':
-        status_path = f'{os.getcwd()}/sessions/{device_id}.status'
-        try:
-            os.remove(status_path)
-        except:
-            pass
         Thread(target=login_tread, args=(device_id, action, phone)).start()
         while get_status(device_id)['action'] != 'sms':
             time.sleep(1)
