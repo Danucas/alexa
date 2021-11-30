@@ -1,12 +1,10 @@
 from api.v1.auth import auth_app
 from flask import jsonify, request
 from rappi_api import Rappi
-import json
 import os
 import time
-import threading
 from threading import Thread
-from utils import get_status, save_status
+from api.v1.utils import get_status, save_status
 
 
 def login_tread(device_id, action, phone):

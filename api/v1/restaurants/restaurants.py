@@ -1,10 +1,7 @@
 from api.v1.restaurants import restaurants_app
 from flask import jsonify, request
 from rappi_api import Rappi
-from utils import get_status, save_status
-import json
-import os
-import time
+from api.v1.utils import get_status, save_status
 from threading import Thread
 
 
