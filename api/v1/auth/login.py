@@ -20,10 +20,10 @@ def login():
     and return depending on the state a new request
     :return:
     """
-    action = request.form.get('action')
-    device_id = request.form.get('device_id')
-    phone = request.form.get('phone')
-    code = request.form.get('code')
+    action = request.form.get('action') or request.get_json().get('action')
+    device_id = request.form.get('device_id') or request.get_json().get('device_id')
+    phone = request.form.get('phone') or request.get_json().get('phone')
+    code = request.form.get('code') or request.get_json().get('code')
 
     if not action:
         return jsonify(error='Missing field <action>'), 403
