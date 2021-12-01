@@ -127,11 +127,10 @@ class Rappi:
         val_btn = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div/div/div[1]/div/button')
         val_btn.click()
 
-
     def list_food_categories(self):
         self.reload_driver()
         self.driver.get('https://www.rappi.com.co/restaurantes')
-        time.sleep(3)
+        time.sleep(6)
         slider = self.get_by_xpath('//*[@id="__next"]/div[2]/div/div[2]/div/div/div/div/div/div')
         try:
             close_directions = self.get_by_xpath('//*[@id="portal-root-container"]/div/div/div/div[1]/div')

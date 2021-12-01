@@ -25,7 +25,7 @@ def restaurant_categories():
     if check:
         stats = get_status(device_id)
         if 'action' in stats and stats['action'] == 'loaded':
-            return jsonify(data=get_status(device_id)['data'])
+            return jsonify(data=stats['data'])
         else:
             return jsonify(data=[])
     else:
