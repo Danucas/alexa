@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_file
 from api.v1.auth import auth_app
 from api.v1.restaurants import restaurants_app
 from rappi_api import Rappi
@@ -14,6 +14,11 @@ def status(user_device_id):
     rappi_interface = Rappi(user_device_id)
     st = rappi_interface.get_account_status()
     return jsonify(status=st)
+
+
+@app.route('/screenshot')
+def screenshot():
+    return send_file(f'{os.getcwd()}/sessions/image.png', mimetype='image/png')
 
 
 @app.route('/sign_status')

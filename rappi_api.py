@@ -24,7 +24,8 @@ class Rappi:
         self.reload_driver()
         search_url = "https://www.rappi.com.co"
         self.driver.get(search_url)
-        time.sleep(2)
+        time.sleep(4)
+        self.driver.save_screenshot(f'{os.getcwd()}/sessions/image.png')
         try:
             name_badge = self.get_by_xpath('//*[@id="navbar-root-portal"]/div/div/div[3]/div')
             return True
