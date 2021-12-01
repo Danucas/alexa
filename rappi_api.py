@@ -146,8 +146,8 @@ class Rappi:
             if f_cat[1].lower() == category.lower():
                 cat = f_cat[0]
         self.driver.execute_script("arguments[0].click();", cat)
-        time.sleep(2)
-        restaurants_container = self.get_by_xpath('//*[@id="__next"]/div[2]/div/div[5]/section/ul')
+        time.sleep(5)
+        restaurants_container = self.get_by_xpath('//*[@id="__next"]/div[2]/div/div[4]/section/ul')
 
         restaurants = []
         for child in restaurants_container.find_elements_by_xpath('.//h3'):
