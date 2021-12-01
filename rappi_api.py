@@ -22,26 +22,24 @@ class Rappi:
 
     def login_status(self):
         self.reload_driver()
-        search_url = "https://www.rappi.com.co/login"
+        search_url = "https://www.rappi.com.co"
         self.driver.get(search_url)
-        time.sleep(1)
+        time.sleep(2)
         try:
-
-            cel_input = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div[2]/form/div[1]/div/input')
-            return False
+            name_badge = self.get_by_xpath('//*[@id="navbar-root-portal"]/div/div/div[3]/div')
+            return True
         except Exception as e:
             print(e)
-            return True
+            return False
 
     def reload_driver(self):
         op = webdriver.chrome.options.Options()
-        # session_path = f'{os.getcwd()}/sessions/{self.device_id}.session'
         user_path = f'{os.getcwd()}/sessions/{self.device_id}.user'
         op.headless = True
         op.add_argument(f'user-data-dir={user_path}')
         self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=op)
-        self.driver.set_window_position(0, 0)
-        self.driver.set_window_size(720, 768)
+        # self.driver.set_window_position(0, 0)
+        # self.driver.set_window_size(720, 768)
 
     def login(self, action, phone):
         self.reload_driver()
