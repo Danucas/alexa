@@ -1,3 +1,5 @@
+import time
+
 from api.v1.restaurants import restaurants_app
 from flask import jsonify, request
 from rappi_api import Rappi
@@ -26,6 +28,7 @@ def restaurant_categories():
     else:
         save_status(device_id, 'fetching')
         Thread(target=async_categories, args=(device_id,)).start()
+    time.sleep(3)
     return jsonify(status='check')
 
 
