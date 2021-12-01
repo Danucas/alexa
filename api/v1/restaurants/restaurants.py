@@ -13,6 +13,8 @@ def async_categories(device_id):
         c[1]
         for c in rappi_interface.list_food_categories()
     ]
+    print('Categories loaded from Rappi Frontend')
+    print(categories)
     save_status(device_id, 'loaded', data=categories)
 
 
