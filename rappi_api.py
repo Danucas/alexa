@@ -1,12 +1,12 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import ElementClickInterceptedException
 import time
 import pickle
 import os
 import requests
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.common.exceptions import ElementClickInterceptedException
 import json
 from selenium import webdriver
 
@@ -132,16 +132,16 @@ class Rappi:
         self.driver.get('https://www.rappi.com.co/restaurantes')
         time.sleep(4)
         slider = self.get_by_xpath('//*[@id="__next"]/div[2]/div/div[2]/div/div/div/div/div/div')
-        max_retries = 3
-        retry = 0
-        while max_retries > retry:
-            try:
-                close_directions = self.get_by_xpath('//*[@id="portal-root-container"]/div/div/div/div[1]/div')
-                close_directions.click()
-                break
-            except:
-                pass
-            retry += 1
+        # max_retries = 3
+        # retry = 0
+        # while max_retries > retry:
+        #     try:
+        #         close_directions = self.get_by_xpath('//*[@id="portal-root-container"]/div/div/div/div[1]/div')
+        #         close_directions.click()
+        #         break
+        #     except:
+        #         pass
+        #     retry += 1
         food_categories = []
         for child in slider.find_elements_by_xpath('.//span'):
             if child.text and child.text != '':
@@ -154,17 +154,17 @@ class Rappi:
         for f_cat in food_categories:
             if f_cat[1].lower() == category.lower():
                 cat = f_cat[0]
-        max_retries = 3
-        retry = 0
-        while max_retries > retry:
-            try:
-                close_directions = self.get_by_xpath('//*[@id="portal-root-container"]/div/div/div/div[1]/div')
-                close_directions.click()
-                break
-            except:
-                pass
-            retry += 1
-        cat.click()
+        # max_retries = 3
+        # retry = 0
+        # while max_retries > retry:
+        #     try:
+        #         close_directions = self.get_by_xpath('//*[@id="portal-root-container"]/div/div/div/div[1]/div')
+        #         close_directions.click()
+        #         break
+        #     except:
+        #         pass
+        #     retry += 1
+        self.driver.execute_script("arguments[0].click();", cat)
         restaurants_container = self.get_by_xpath('//*[@id="__next"]/div[2]/div/div[4]/section/ul')
         restaurants = []
         for child in restaurants_container.find_elements_by_xpath('.//h3'):
