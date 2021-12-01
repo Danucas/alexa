@@ -95,8 +95,8 @@ class Rappi:
             stat = self.get_status()
             code = stat.get('code')
             self.code6(code)
-            time.sleep(6)
             self.save_status('finish', "SIGNED")
+            time.sleep(4)
             return 'finish'
 
     def code4(self, code):
@@ -155,7 +155,7 @@ class Rappi:
                     'name': child.text,
                     'url': child.find_element_by_xpath('..//..//..').get_attribute('href')
                 })
-        location_badge = self.get_by_xpath('//*[@id="__next"]/rappi-mf-header/div/div[1]/div[2]')
+        location_badge = self.get_by_xpath('//*[@id="CO-withAddress"]')
         location_badge = location_badge.find_element_by_xpath('.//span')
         self.save_status('fetching', location=location_badge.text)
         print('Location is', location_badge.text)
