@@ -157,8 +157,11 @@ class Rappi:
                 cat = f_cat[0]
         self.driver.execute_script("arguments[0].click();", cat)
         time.sleep(5)
-        restaurants_container = self.get_by_xpath('//*[@id="__next"]/div[2]/div/div[4]/section/ul')
-
+        try:
+            restaurants_container = self.get_by_xpath('//*[@id="__next"]/div[2]/div/div[4]/section/ul')
+        except:
+            print('searching restaurants container by div[5]')
+            restaurants_container = self.get_by_xpath('//*[@id="__next"]/div[2]/div/div[5]/section/ul')
         restaurants = []
         for child in restaurants_container.find_elements_by_xpath('.//h3'):
             if child.text != '':
