@@ -154,24 +154,16 @@ class Rappi:
         for f_cat in food_categories:
             if f_cat[1].lower() == category.lower():
                 cat = f_cat[0]
-        # max_retries = 3
-        # retry = 0
-        # while max_retries > retry:
-        #     try:
-        #         close_directions = self.get_by_xpath('//*[@id="portal-root-container"]/div/div/div/div[1]/div')
-        #         close_directions.click()
-        #         break
-        #     except:
-        #         pass
-        #     retry += 1
         self.driver.execute_script("arguments[0].click();", cat)
+        time.sleep(5)
         restaurants_container = self.get_by_xpath('//*[@id="__next"]/div[2]/div/div[4]/section/ul')
         restaurants = []
         for child in restaurants_container.find_elements_by_xpath('.//h3'):
-            restaurants.append({
-                'name': child.text,
-                'url': child.find_element_by_xpath('..//..//..').get_attribute('href')
-            })
+            if child.text != '':
+                restaurants.append({
+                    'name': child.text,
+                    'url': child.find_element_by_xpath('..//..//..').get_attribute('href')
+                })
         return restaurants
 
     def list_menu_categories(self, restaurant):
