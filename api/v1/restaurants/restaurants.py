@@ -23,13 +23,13 @@ def restaurant_categories():
     if check:
         stats = get_status(device_id)
         if 'action' in stats and stats['action'] == 'loaded':
-            return jsonify(data=[])
-        else:
             return jsonify(data=get_status(device_id)['data'])
+        else:
+            return jsonify(data=[])
     else:
-        save_status(device_id, 'fetching')
+        save_status(device_id, 'fetching', data=[])
         Thread(target=async_categories, args=(device_id,)).start()
-    time.sleep(3)
+    time.sleep(1)
     return jsonify(status='check')
 
 
