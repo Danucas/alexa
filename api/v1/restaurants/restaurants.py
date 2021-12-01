@@ -38,6 +38,8 @@ def restaurant_categories():
 def async_restaurants(device_id, category):
     rappi_interface = Rappi(device_id)
     restaurants = rappi_interface.list_restaurants(category)
+    print('Restaurants loaded from Rappi Frontend')
+    print(restaurants)
     save_status(device_id, 'loaded', data=restaurants)
 
 
