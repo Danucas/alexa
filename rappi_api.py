@@ -157,6 +157,7 @@ class Rappi:
                 cat = f_cat[0]
         self.driver.execute_script("arguments[0].click();", cat)
         time.sleep(5)
+        self.driver.save_screenshot(f'{os.getcwd()}/screenshots/{time.time()}.png')
         try:
             restaurants_container = self.get_by_xpath('//*[@id="__next"]/div[2]/div/div[4]/section/ul')
         except:
