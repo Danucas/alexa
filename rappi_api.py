@@ -175,6 +175,8 @@ class Rappi:
         # location_badge = location_badge.find_element_by_xpath('.//span')
         self.save_status('fetching', location=location_badge.text)
         print('Location is', location_badge.text)
+        location_badge.find_element_by_xpath('..//..').click()
+        time.sleep(3)
         self.driver.save_screenshot(f'{os.getcwd()}/screenshots/{time.time()}.png')
         return restaurants
 
