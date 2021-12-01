@@ -136,6 +136,7 @@ class Rappi:
         for child in slider.find_elements_by_xpath('.//h3'):
             if child.text and child.text != '':
                 food_categories.append((child.find_element_by_xpath('..//..//..//..//..//..'), child.text))
+        self.driver.save_screenshot(f'{os.getcwd()}/screenshots/{time.time()}.png')
         return food_categories
 
     def list_restaurants(self, category=None):
@@ -158,6 +159,7 @@ class Rappi:
         location_badge = location_badge.find_element_by_xpath('.//span')
         self.save_status('fetching', location=location_badge.text)
         print('Location is', location_badge.text)
+        self.driver.save_screenshot(f'{os.getcwd()}/screenshots/{time.time()}.png')
         return restaurants
 
     def list_menu_categories(self, restaurant):
