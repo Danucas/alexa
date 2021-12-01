@@ -155,7 +155,7 @@ class Rappi:
                     'url': child.find_element_by_xpath('..//..//..').get_attribute('href')
                 })
         location_badge = self.get_by_xpath('//*[@id="__next"]/rappi-mf-header/div/div[1]/div[2]')
-        self.save_status('fetching', location=location_badge.find_element('.//span').text)
+        self.save_status('fetching', location=location_badge.find_element_by_xpath('.//span').text)
         print('Location is', location_badge)
         return restaurants
 
