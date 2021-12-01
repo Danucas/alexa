@@ -157,7 +157,7 @@ class Rappi:
                     'url': child.find_element_by_xpath('..//..//..').get_attribute('href')
                 })
         location_badge = self.get_by_xpath('//*[@id="CO-withAddress"]')
-        location_badge = location_badge.find_element_by_xpath('.//span')
+        # location_badge = location_badge.find_element_by_xpath('.//span')
         self.save_status('fetching', location=location_badge.text)
         print('Location is', location_badge.text)
         self.driver.save_screenshot(f'{os.getcwd()}/screenshots/{time.time()}.png')
