@@ -135,7 +135,7 @@ class Rappi:
         food_categories = []
         for child in slider.find_elements_by_xpath('.//h3'):
             if child.text and child.text != '':
-                food_categories.append((child.find_element_by_xpath('..//..//..//..//'), child.text))
+                food_categories.append((child.find_element_by_xpath('..//..//..//..//..//..'), child.text))
         return food_categories
 
     def list_restaurants(self, category=None):
@@ -145,7 +145,7 @@ class Rappi:
             if f_cat[1].lower() == category.lower():
                 cat = f_cat[0]
         self.driver.execute_script("arguments[0].click();", cat)
-        time.sleep(10)
+        time.sleep(6)
         restaurants_container = self.get_by_xpath('//*[@id="__next"]/div[2]/div/div[4]/section/ul')
         restaurants = []
         for child in restaurants_container.find_elements_by_xpath('.//h3'):
