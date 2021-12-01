@@ -21,10 +21,10 @@ def restaurant_categories():
     device_id = request.args.get('device_id')
     check = request.args.get('check')
     if check:
-        if get_status(device_id)['action'] != 'fetching':
-            return jsonify(data=get_status(device_id)['data'])
-        else:
+        if get_status(device_id)['action'] == 'loaded':
             return jsonify(data=[])
+        else:
+            return jsonify(data=get_status(device_id)['data'])
     else:
         save_status(device_id, 'fetching')
         Thread(target=async_categories, args=(device_id,)).start()
