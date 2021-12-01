@@ -147,7 +147,7 @@ class Rappi:
         food_categories = self.list_food_categories()
         cat = None
         for f_cat in food_categories:
-            if f_cat[1] == category:
+            if f_cat[1].lower() == category.lower():
                 cat = f_cat[0]
         try:
             close_directions = self.get_by_xpath('//*[@id="portal-root-container"]/div/div/div/div[1]/div')
