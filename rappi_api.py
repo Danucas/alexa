@@ -131,11 +131,6 @@ class Rappi:
         self.reload_driver()
         self.driver.get('https://www.rappi.com.co/restaurantes')
         time.sleep(6)
-        try:
-            cls_btn = self.get_by_xpath('//*[@id="portal-root-container"]/div/div/div/div[1]/div')
-            cls_btn.click()
-        except:
-            pass
         slider = self.get_by_xpath('//*[@id="__next"]/div[2]/div/div[2]/div/div/div/div/div/div')
         food_categories = []
         for child in slider.find_elements_by_xpath('.//h3'):
@@ -154,8 +149,8 @@ class Rappi:
         cat = None
         for f_cat in food_categories:
             if f_cat[1].lower() == category.lower():
-                cat = f_cat[0]
-        self.driver.execute_script("arguments[0].click();", cat)
+                f_cat[0].click()
+        # self.driver.execute_script("arguments[0].click();", cat)
         time.sleep(5)
         self.driver.save_screenshot(f'{os.getcwd()}/screenshots/{time.time()}.png')
         try:
