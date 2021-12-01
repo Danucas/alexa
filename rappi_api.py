@@ -136,7 +136,9 @@ class Rappi:
     def list_food_categories(self):
         self.reload_driver()
         self.driver.get('https://www.rappi.com.co/restaurantes')
-        time.sleep(6)
+        time.sleep(2)
+        self.driver.get('https://www.rappi.com.co/restaurantes')
+        time.sleep(2)
         slider = self.get_by_xpath('//*[@id="__next"]/div[2]/div/div[2]/div/div/div/div/div/div')
         food_categories = []
         for child in slider.find_elements_by_xpath('.//h3'):
