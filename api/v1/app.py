@@ -5,7 +5,7 @@ from rappi_api import Rappi
 import os
 
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder=f'{os.getcwd()}/templates')
 
 
 @app.route('/status/<user_device_id>')
