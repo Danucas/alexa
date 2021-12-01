@@ -94,6 +94,7 @@ class Rappi:
             stat = self.get_status()
             code = stat.get('code')
             self.code6(code)
+            time.sleep(6)
             self.save_status('finish', "SIGNED")
             return 'finish'
 
