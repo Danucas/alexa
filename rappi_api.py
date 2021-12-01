@@ -145,7 +145,7 @@ class Rappi:
             if f_cat[1].lower() == category.lower():
                 cat = f_cat[0]
         self.driver.execute_script("arguments[0].click();", cat)
-        time.sleep(6)
+        time.sleep(12)
         restaurants_container = self.get_by_xpath('//*[@id="__next"]/div[2]/div/div[4]/section/ul')
         restaurants = []
         for child in restaurants_container.find_elements_by_xpath('.//h3'):
@@ -155,8 +155,9 @@ class Rappi:
                     'url': child.find_element_by_xpath('..//..//..').get_attribute('href')
                 })
         location_badge = self.get_by_xpath('//*[@id="__next"]/rappi-mf-header/div/div[1]/div[2]')
-        self.save_status('fetching', location=location_badge.find_element_by_xpath('.//span').text)
-        print('Location is', location_badge)
+        location_badge = location_badge.find_element_by_xpath('.//span')
+        self.save_status('fetching', location=location_badge.text)
+        print('Location is', location_badge.text)
         return restaurants
 
     def list_menu_categories(self, restaurant):
