@@ -21,7 +21,8 @@ def restaurant_categories():
     device_id = request.args.get('device_id')
     check = request.args.get('check')
     if check:
-        if get_status(device_id)['action'] == 'loaded':
+        stats = get_status(device_id)
+        if 'action' in stats and stats['action'] == 'loaded':
             return jsonify(data=[])
         else:
             return jsonify(data=get_status(device_id)['data'])
