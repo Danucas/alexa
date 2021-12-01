@@ -42,11 +42,11 @@ class Rappi:
         op = webdriver.chrome.options.Options()
         user_path = f'{os.getcwd()}/sessions/{self.device_id}.user'
         op.headless = True
-        prefs = {"profile.default_content_setting_values.geolocation": 2}
-        op.add_experimental_option("prefs", prefs)
+        # prefs = {"profile.default_content_setting_values.geolocation": 2}
+        # op.add_experimental_option("prefs", prefs)
         op.add_argument(f'user-data-dir={user_path}')
         self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=op)
-        # self.driver.execute_cdp_cmd("Emulation.setGeolocationOverride", params)
+        self.driver.execute_cdp_cmd("Emulation.setGeolocationOverride", params)
         # self.driver.set_window_position(0, 0)
         # self.driver.set_window_size(720, 768)
 
