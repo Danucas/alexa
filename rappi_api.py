@@ -34,11 +34,18 @@ class Rappi:
             return False
 
     def reload_driver(self):
+        params = {
+            "latitude": 3.370443,
+            "longitude": -76.523540,
+            "accuracy": 3
+        }
+
         op = webdriver.chrome.options.Options()
         user_path = f'{os.getcwd()}/sessions/{self.device_id}.user'
         op.headless = True
         op.add_argument(f'user-data-dir={user_path}')
         self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=op)
+        self.driver.execute_cdp_cmd("Page.setGeolocationOverride", params)
         # self.driver.set_window_position(0, 0)
         # self.driver.set_window_size(720, 768)
 
