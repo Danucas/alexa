@@ -35,13 +35,28 @@ def restaurant_categories():
     return jsonify(status='check')
 
 
+def async_restaurants(device_id, category):
+    rappi_interface = Rappi(device_id)
+    restaurants = rappi_interface.list_restaurants(category)
+    save_status(device_id, 'loaded', data=restaurants)
+
+
 @restaurants_app.route('/', methods=['GET'])
 def restaurants_list():
     device_id = request.args.get('device_id')
     category = request.args.get('category')
-    rappi_interface = Rappi(device_id)
-    restaurants = rappi_interface.list_restaurants(category)
-    return jsonify(restaurants=restaurants)
+    check = request.args.get('check')
+    if check:
+        stats = get_status(device_id)
+        if 'action' in stats and stats['action'] == 'loaded':
+            return jsonify(data=stats['data'])
+        else:
+            return jsonify(data=[])
+    else:
+        save_status(device_id, 'fetching', data=[])
+        Thread(target=async_restaurants, args=(device_id, category,)).start()
+    time.sleep(1)
+    return jsonify(status='loading')
 
 
 @restaurants_app.route('/menus', methods=['GET'])
