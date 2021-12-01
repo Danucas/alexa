@@ -154,6 +154,8 @@ class Rappi:
                     'name': child.text,
                     'url': child.find_element_by_xpath('..//..//..').get_attribute('href')
                 })
+        location_badge = self.get_by_xpath('//*[@id="CO-withAddress"]')
+        self.save_status('fetching', location=location_badge.text)
         return restaurants
 
     def list_menu_categories(self, restaurant):
@@ -176,7 +178,7 @@ class Rappi:
         )
         return el
     
-    def save_status(self, st, sign=None):
+    def save_status(self, st, sign=None, location=None):
         try:
             stats = self.get_status()
         except FileNotFoundError:
@@ -187,6 +189,8 @@ class Rappi:
             }
         if sign:
             stats['sign'] = sign
+        if location:
+            stats['location'] = location
         stats['action'] = st
         stats['code'] = None
         status_path = f'{os.getcwd()}/sessions/{self.device_id}.status'
