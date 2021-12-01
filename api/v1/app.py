@@ -16,6 +16,16 @@ def status(user_device_id):
     return jsonify(status=st)
 
 
+@app.route('/sign_status')
+def sign_status():
+    device_id = request.args.get('device_id')
+    rappi_interface = Rappi(device_id)
+    st = rappi_interface.login_status()
+    print('Login status', st)
+    return jsonify(status=st)
+
+
+
 app.register_blueprint(auth_app, url_prefix='/api/v1/auth')
 app.register_blueprint(restaurants_app, url_prefix='/api/v1/restaurants')
 
