@@ -130,22 +130,12 @@ class Rappi:
     def list_food_categories(self):
         self.reload_driver()
         self.driver.get('https://www.rappi.com.co/restaurantes')
-        time.sleep(4)
+        time.sleep(6)
         slider = self.get_by_xpath('//*[@id="__next"]/div[2]/div/div[2]/div/div/div/div/div/div')
-        # max_retries = 3
-        # retry = 0
-        # while max_retries > retry:
-        #     try:
-        #         close_directions = self.get_by_xpath('//*[@id="portal-root-container"]/div/div/div/div[1]/div')
-        #         close_directions.click()
-        #         break
-        #     except:
-        #         pass
-        #     retry += 1
         food_categories = []
-        for child in slider.find_elements_by_xpath('.//span'):
+        for child in slider.find_elements_by_xpath('.//h3'):
             if child.text and child.text != '':
-                food_categories.append((child.find_element_by_xpath('..//..//..//..'), child.text))
+                food_categories.append((child.find_element_by_xpath('..//..//..//..//..'), child.text))
         return food_categories
 
     def list_restaurants(self, category=None):
@@ -155,7 +145,7 @@ class Rappi:
             if f_cat[1].lower() == category.lower():
                 cat = f_cat[0]
         self.driver.execute_script("arguments[0].click();", cat)
-        time.sleep(5)
+        time.sleep(10)
         restaurants_container = self.get_by_xpath('//*[@id="__next"]/div[2]/div/div[4]/section/ul')
         restaurants = []
         for child in restaurants_container.find_elements_by_xpath('.//h3'):
