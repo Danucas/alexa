@@ -149,6 +149,7 @@ class Rappi:
         return food_categories
 
     def save_screenshot(self, function):
+        print(f'Take screenshot {function}')
         self.driver.save_screenshot(f'{os.getcwd()}/screenshots/{function}-{time.time()}.png')
 
 
