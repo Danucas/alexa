@@ -144,7 +144,7 @@ class Rappi:
         food_categories = []
         for child in slider.find_elements_by_xpath('.//h3'):
             if child.text and child.text != '':
-                food_categories.append((child.find_element_by_xpath('..//..//..//..//..//..'), child.text))
+                food_categories.append((child.find_element_by_xpath('..//..//..//..//..'), child.text))
         self.save_screenshot('list_food_categories')
         return food_categories
 
