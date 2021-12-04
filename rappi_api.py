@@ -34,20 +34,20 @@ class Rappi:
             return False
 
     def reload_driver(self):
-        params = {
-            "latitude": 3.370443,
-            "longitude": -76.523540,
-            "accuracy": 3
-        }
+        # params = {
+        #     "latitude": 3.370443,
+        #     "longitude": -76.523540,
+        #     "accuracy": 3
+        # }
         op = webdriver.chrome.options.Options()
         user_path = f'{os.getcwd()}/sessions/{self.device_id}.user'
         op.headless = True
-        op.add_experimental_option('prefs', {
-            'geolocation': True
-        })
+        # op.add_experimental_option('prefs', {
+        #     'geolocation': True
+        # })
         op.add_argument(f'user-data-dir={user_path}')
         self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=op)
-        self.driver.execute_cdp_cmd("Emulation.setGeolocationOverride", params)
+        # self.driver.execute_cdp_cmd("Emulation.setGeolocationOverride", params)
         # self.driver.set_window_position(0, 0)
         # self.driver.set_window_size(720, 768)
 
@@ -87,7 +87,7 @@ class Rappi:
                 self.code4(code)
                 # Check if the code works and there's no problem with the login
                 try:
-                    time.sleep(2)
+                    time.sleep(3)
                     email_val = self.get_by_xpath('//*[@id="__next"]/div/div[2]/div/div/div[1]/span[2]')
                     if '@' in email_val.text:
                         self.save_status('email')
@@ -140,30 +140,36 @@ class Rappi:
         self.reload_driver()
         self.driver.get('https://www.rappi.com.co/restaurantes')
         time.sleep(2)
-        self.driver.get('https://www.rappi.com.co/restaurantes')
-        time.sleep(2)
         slider = self.get_by_xpath('//*[@id="__next"]/div[2]/div/div[2]/div/div/div/div/div/div')
         food_categories = []
         for child in slider.find_elements_by_xpath('.//h3'):
             if child.text and child.text != '':
                 food_categories.append((child.find_element_by_xpath('..//..//..//..//..//..'), child.text))
-        self.driver.save_screenshot(f'{os.getcwd()}/screenshots/{time.time()}.png')
+        self.save_screenshot('list_food_categories')
         return food_categories
+
+    def save_screenshot(self, function):
+        self.driver.save_screenshot(f'{os.getcwd()}/screenshots/{function}-{time.time()}.png')
+
 
     def list_restaurants(self, category=None):
         food_categories = self.list_food_categories()
+        self.save_screenshot('list_restaurants')
         try:
             cls_btn = self.get_by_xpath('//*[@id="portal-root-container"]/div/div/div/div[1]/div')
             cls_btn.click()
         except:
             pass
         cat = None
+        self.save_screenshot('list_restaurants_before_click')
         for f_cat in food_categories:
             if f_cat[1].lower() == category.lower():
+                print('Category', category, f_cat[1])
                 f_cat[0].click()
+                time.sleep(2)
         # self.driver.execute_script("arguments[0].click();", cat)
         time.sleep(5)
-        self.driver.save_screenshot(f'{os.getcwd()}/screenshots/{time.time()}.png')
+        self.save_screenshot('list_restaurants_after_click')
         try:
             restaurants_container = self.get_by_xpath('//*[@id="__next"]/div[2]/div/div[4]/section/ul')
         except:
