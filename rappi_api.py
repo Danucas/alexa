@@ -162,17 +162,18 @@ class Rappi:
         except:
             pass
         cat = None
-        self.save_screenshot('list_restaurants_before_click')
         for f_cat in food_categories:
             if f_cat[1].lower() == category.lower():
                 print('Category', category, f_cat[1])
                 self.driver.execute_script("arguments[0].scrollIntoView();", f_cat[0])
                 time.sleep(2)
+                self.save_screenshot('list_restaurants_before_click')
                 f_cat[0].click()
                 time.sleep(2)
+                self.save_screenshot('list_restaurants_after_click')
         # self.driver.execute_script("arguments[0].click();", cat)
         time.sleep(5)
-        self.save_screenshot('list_restaurants_after_click')
+        
         try:
             restaurants_container = self.get_by_xpath('//*[@id="__next"]/div[2]/div/div[4]/section/ul')
         except:
