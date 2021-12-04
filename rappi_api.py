@@ -166,6 +166,8 @@ class Rappi:
         for f_cat in food_categories:
             if f_cat[1].lower() == category.lower():
                 print('Category', category, f_cat[1])
+                driver.execute_script("arguments[0].scrollIntoView();", f_cat[0])
+                time.sleep(2)
                 f_cat[0].click()
                 time.sleep(2)
         # self.driver.execute_script("arguments[0].click();", cat)
