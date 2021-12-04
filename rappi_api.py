@@ -165,7 +165,7 @@ class Rappi:
         for f_cat in food_categories:
             if f_cat[1].lower() == category.lower():
                 print('Category', category, f_cat[1])
-                self.driver.execute_script("arguments[0].scrollIntoView();", f_cat[0])
+                self.driver.execute_script("arguments[0].style.backgroundColor = 'red';", f_cat[0])
                 time.sleep(2)
                 self.save_screenshot('list_restaurants_before_click')
                 f_cat[0].click()
