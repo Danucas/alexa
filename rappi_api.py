@@ -41,7 +41,7 @@ class Rappi:
         # }
         op = webdriver.chrome.options.Options()
         user_path = f'{os.getcwd()}/sessions/{self.device_id}.user'
-        op.headless = False
+        op.headless = True
         # op.add_experimental_option('prefs', {
         #     'geolocation': True
         # })
