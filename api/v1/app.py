@@ -56,4 +56,4 @@ app.register_blueprint(auth_app, url_prefix='/api/v1/auth')
 app.register_blueprint(restaurants_app, url_prefix='/api/v1/restaurants')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port='8080')
+    app.run(host='0.0.0.0', port='5000')
