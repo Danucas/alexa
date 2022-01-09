@@ -41,7 +41,7 @@ class Rappi:
         # }
         op = webdriver.chrome.options.Options()
         user_path = f'{os.getcwd()}/sessions/{self.device_id}.user'
-        op.headless = True
+        op.headless = False
         # op.add_experimental_option('prefs', {
         #     'geolocation': True
         # })
@@ -139,13 +139,24 @@ class Rappi:
     def list_food_categories(self):
         self.reload_driver()
         self.driver.get('https://www.rappi.com.co/restaurantes')
-        time.sleep(2)
+        time.sleep(4)
+        # try:
+        #     cls_btn = self.get_by_xpath('//*[@id="portal-root-container"]/div/div/div/div[1]/div')
+        #     cls_btn.click()
+        #     time.sleep(2)
+        #     dropdown = self.get_by_xpath('//*[@id="CO-withAddress"]').click()
+        #     time.sleep(2)
+        #     get_address = self.get_by_xpath('//*[@id="portal-root-container"]/div/div/div/div[2]/div[3]/div[1]/div[1]/span[1]').text
+        #     print("this is the full address",get_address)
+        # except:
+        #     pass
         slider = self.get_by_xpath('//*[@id="__next"]/div[2]/div/div[2]/div/div/div/div/div/div')
         food_categories = []
         for child in slider.find_elements_by_xpath('.//h3'):
             if child.text and child.text != '':
                 food_categories.append((child.find_element_by_xpath('..//..//..//..//..'), child.text))
         self.save_screenshot('list_food_categories')
+        time.sleep(180)
         return food_categories
 
     def save_screenshot(self, function):
